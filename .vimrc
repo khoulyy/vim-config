@@ -16,11 +16,36 @@ syntax on
 " Add numbers to each line on the left-hand side.
 set number
 
+" Highlight cursor line underneath the cursor horizontally.
+set cursorline
+
+" Set shift width to 4 spaces.
+set shiftwidth=4
+
 " Set tab width to 4 columns.
 set tabstop=4
 
+" Use space characters instead of tabs.
+set expandtab
+
+" Do not save backup files.
+set nobackup
+
 " Do not let cursor scroll below or above N number of lines when scrolling.
 set scrolloff=10
+
+" Do not wrap lines. Allow long lines to extend as far as the line goes.
+set nowrap
+
+" While searching though a file incrementally highlight matching characters as you type.
+set incsearch
+
+" Ignore capital letters during search.
+set ignorecase
+
+" Override the ignorecase option if searching for capital letters.
+" This will allow you to search specifically for capital letters.
+set smartcase
 
 " Show partial command you type in the last line of the screen.
 set showcmd
@@ -40,7 +65,6 @@ set history=1000
 " Enable auto completion menu after pressing TAB.
 set wildmenu
 
-
 " Make wildmenu behave like similar to Bash completion.
 set wildmode=list:longest
 
@@ -48,32 +72,32 @@ set wildmode=list:longest
 " Wildmenu will ignore files with these extensions.
 set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx
 
-
 " PLUGINS ---------------------------------------------------------------- {{{
 
 " Plugin code goes here.
-call plug#begin()
+call plug#begin('~/.vim/plugged')
 
+" File explorer (NERDTree)
 Plug 'preservim/nerdtree'
 
+" Syntax check and semantic errors (Asynchronous Lint Engine ALE)
 Plug 'dense-analysis/ale'
 
+" Airline
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+let g:airline_theme='simple'
+let g:airline_powerline_fonts = 1
+
+" Vim status bar icons
+Plug 'ryanoasis/vim-devicons'
+set encoding=UTF-8
+
+" Gruvbox scheme
 Plug 'morhetz/gruvbox'
 set bg=dark
 let g:gruvbox_contrast_dark = 'hard'
 autocmd vimenter * ++nested colorscheme gruvbox
-
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-let g:airline_theme = 'simple'
-
-Plug 'ryanoasis/vim-devicons'
-
-Plug 'powerline/powerline'
-let g:airline_powerline_fonts = 1
-
-Plug 'tmsvg/pear-tree'
-
 call plug#end()
 " }}}
 
@@ -94,6 +118,9 @@ augroup filetype_vim
     autocmd FileType vim setlocal foldmethod=marker
 augroup END
 
+
+" If the current file type is HTML, set indentation to 2 spaces.
+autocmd Filetype html setlocal tabstop=2 shiftwidth=2 expandtab
 " More Vimscripts code goes here.
 
 " }}}
@@ -103,6 +130,17 @@ augroup END
 
 " Status bar code goes here.
 
+" Clear status line when vimrc is reloaded.
+set statusline=
 
+set statusline+=\ %F\ %M\ %Y\ %R
 
+" Use a divider to separate the left side from the right side.
+set statusline+=%=
+
+"Status line right side.
+set statusline+=\ ascii:\ hex:\ 0x%B\ row:\ %l\ percent:\ %p%%
+
+set laststatus=2
+:set cmdheight=1
 " }}}
