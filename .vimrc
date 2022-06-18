@@ -12,7 +12,7 @@ filetype indent on
 
 " Turn syntax highlighting on.
 syntax on
-
+syntax enable
 " Add numbers to each line on the left-hand side.
 set number
 
@@ -72,6 +72,14 @@ set wildmode=list:longest
 " Wildmenu will ignore files with these extensions.
 set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx
 
+let &t_ut=''
+
+if exists('+termguicolors')
+    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+    set termguicolors
+  endif
+
 " PLUGINS ---------------------------------------------------------------- {{{
 
 " Plugin code goes here.
@@ -80,25 +88,56 @@ call plug#begin('~/.vim/plugged')
 " File explorer (NERDTree)
 Plug 'preservim/nerdtree'
 
-" Syntax check and semantic errors (Asynchronous Lint Engine ALE)
+" Syntax Checker
 Plug 'dense-analysis/ale'
+
+" Conquer of Completion
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+" Enable completion where available.
+" This setting must be set before ALE is loaded.
+"
+" You should not turn this setting on if you wish to use ALE as a completion
+" source for other completion plugins, like Deoplete.
+let g:ale_completion_enabled = 1
 
 " Airline
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-let g:airline_theme='simple'
+let g:airline_theme='deus'
 let g:airline_powerline_fonts = 1
 
 " Vim status bar icons
 Plug 'ryanoasis/vim-devicons'
 set encoding=UTF-8
 
-" Gruvbox scheme
-Plug 'morhetz/gruvbox'
-set bg=dark
-let g:gruvbox_contrast_dark = 'hard'
-autocmd vimenter * ++nested colorscheme gruvbox
+Plug 'sheerun/vim-polyglot'
+Plug 'rakr/vim-one'
+
+"Credit joshdick
+"Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
+"If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
+"(see < http://sunaku.github.io/tmux-24bit-color.html#usage > for more information.)
+if (empty($TMUX))
+  if (has("nvim"))
+    "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
+    let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+  endif
+  "For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
+  "Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
+  " < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
+  if (has("termguicolors"))
+    set termguicolors
+  endif
+endif
+
+let g:one_allow_italics = 1 " I love italic for comments
+set background=dark
+autocmd vimenter * ++nested colorscheme one 
+
+" let g:airline#extensions#tabline#enabled = 1
 call plug#end()
+
 " }}}
 
 
@@ -133,14 +172,20 @@ autocmd Filetype html setlocal tabstop=2 shiftwidth=2 expandtab
 " Clear status line when vimrc is reloaded.
 set statusline=
 
+" Status line left side.
 set statusline+=\ %F\ %M\ %Y\ %R
 
 " Use a divider to separate the left side from the right side.
 set statusline+=%=
 
-"Status line right side.
-set statusline+=\ ascii:\ hex:\ 0x%B\ row:\ %l\ percent:\ %p%%
+" Status line right side.
+set statusline+=\ row:\ %l\ percent:\ %p%%
 
+" Show the status on the second to last line.
 set laststatus=2
-:set cmdheight=1
+
 " }}}
+
+set t_u7=
+set t_RV=
+
