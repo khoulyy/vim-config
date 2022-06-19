@@ -12,7 +12,7 @@ filetype indent on
 
 " Turn syntax highlighting on.
 syntax on
-syntax enable
+
 " Add numbers to each line on the left-hand side.
 set number
 
@@ -60,8 +60,6 @@ set showmatch
 set hlsearch
 
 " Set the commands to save in history default number is 20.
-set history=1000
-
 " Enable auto completion menu after pressing TAB.
 set wildmenu
 
@@ -78,7 +76,7 @@ if exists('+termguicolors')
     let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
     set termguicolors
-  endif
+endif
 
 " PLUGINS ---------------------------------------------------------------- {{{
 
@@ -88,10 +86,8 @@ call plug#begin('~/.vim/plugged')
 " File explorer (NERDTree)
 Plug 'preservim/nerdtree'
 
-" Syntax Checker
-Plug 'dense-analysis/ale'
-
 " Conquer of Completion
+" Use release branch (recommend)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Enable completion where available.
@@ -104,7 +100,8 @@ let g:ale_completion_enabled = 1
 " Airline
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-let g:airline_theme='deus'
+Plug 'morhetz/gruvbox'
+let g:airline_theme='gruvbox'
 let g:airline_powerline_fonts = 1
 
 " Vim status bar icons
@@ -131,10 +128,10 @@ if (empty($TMUX))
   endif
 endif
 
-let g:one_allow_italics = 1 " I love italic for comments
 set background=dark
-autocmd vimenter * ++nested colorscheme one 
-
+highlight Comment cterm=italic gui=italic
+let g:gruvbox_italic = 1
+autocmd vimenter * ++nested colorscheme gruvbox
 " let g:airline#extensions#tabline#enabled = 1
 call plug#end()
 
@@ -145,6 +142,13 @@ call plug#end()
 
 " Mappings code goes here.
 
+inoremap " ""<left>
+inoremap ' ''<left>
+inoremap ( ()<left>
+inoremap [ []<left>
+inoremap { {}<left>
+inoremap {<CR> {<CR>}<ESC>O
+inoremap {;<CR> {<CR>};<ESC>O
 " }}}
 
 
@@ -188,4 +192,3 @@ set laststatus=2
 
 set t_u7=
 set t_RV=
-
